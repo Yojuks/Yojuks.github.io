@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-class ToDoListFooter extends Component {
-    
+class ToDoListFooter extends Component {   
     render () {
         return (
             <div className="todolist-footer">

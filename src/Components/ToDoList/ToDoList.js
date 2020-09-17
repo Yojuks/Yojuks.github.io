@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import "./ToDoList.css";
-import Task from './Task'
 import ToDoListFooter from './TodoListFooter'
 import TodoListTaskCreator from "./TodoListTaskCreator";
+import TasksList from './TasksList'
 
 class ToDoList extends Component {
-  constructor(props) {
+  constructor() {
     super();
-    this.newIndex = 2
+   
   
     this.state = {
       tasks: [
         {
           id: 0,
           title: "learn js",
-          isdone: false,
+          isDone: false,
         },
         {
           id: 1,
           title: "learn react",
-          isdone: false,
+          isDone: false,
         }
       ]
     }
@@ -32,10 +32,25 @@ class ToDoList extends Component {
       })
    }
   
-  deleteTask(task) {
+  deleteTask(taskId) {
     const newTaskList = this.state.tasks.filter((t) => {
-      return t !== task;
+      return t.id !== taskId;
     });
+    this.setState({
+      tasks: newTaskList
+      })
+  }
+
+    updateTask(task) {
+    const newTaskList = [...this.state.tasks]
+
+    newTaskList.forEach( (t) => {
+
+      if (t.id === task.id) {
+        t.isDone = task.isDone
+        return
+      } 
+    })
     this.setState({
       tasks: newTaskList
       })
@@ -45,11 +60,11 @@ class ToDoList extends Component {
     return (
       <div className="todolist">
        <TodoListTaskCreator onCreate={this.createNewTask.bind(this)}/>
-        <div className="tasks">
-          {this.state.tasks.map((task, id) => {
-            return <Task task={task} deleteCallback={this.deleteTask.bind(this)} key={task.id} />
-          })}
-        </div>
+       
+       <TasksList 
+          tasks={this.state.tasks} 
+          onDelete={this.deleteTask.bind(this)}
+          onUpdate={this.updateTask.bind(this)}/>
         <ToDoListFooter/>
       </div>
     );
