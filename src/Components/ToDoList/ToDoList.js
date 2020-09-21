@@ -20,13 +20,25 @@ class ToDoList extends Component {
           id: 1,
           title: "learn react",
           isDone: false,
-        }
-      ]
+        },
+      ],
+      filter: 'all'
     }
-
   }
 
-  createNewTask(task) {
+  clearCompleted() {
+    this.setState({
+      tasks: this.state.tasks.filter((t) => !t.isDone)
+    })
+  }
+
+  changeFilter(filterValue) {
+    this.setState({
+      filter: filterValue
+    })
+  }
+
+  putTaskToState(task) {
       this.setState({
         tasks: [...this.state.tasks, task] 
       })
@@ -57,15 +69,28 @@ class ToDoList extends Component {
   }
     
   render() {
+    let {tasks, filter} = this.state
+
+    let filteredTasks = []
+
+    if (filter === 'all') filteredTasks = tasks
+    if (filter === 'active') filteredTasks = tasks.filter((task) => !task.isDone)
+    if (filter === 'completed') filteredTasks = tasks.filter((task) => task.isDone)
+
     return (
       <div className="todolist">
-       <TodoListTaskCreator onCreate={this.createNewTask.bind(this)}/>
+       <TodoListTaskCreator onCreate={this.putTaskToState.bind(this)}/>
        
        <TasksList 
-          tasks={this.state.tasks} 
+          tasks={filteredTasks} 
           onDelete={this.deleteTask.bind(this)}
           onUpdate={this.updateTask.bind(this)}/>
-        <ToDoListFooter/>
+        <ToDoListFooter 
+          tasks={tasks} 
+          filter={filter} 
+          onFilterChanged={this.changeFilter.bind(this)}
+          clearCompleted={this.clearCompleted.bind(this)}
+          />
       </div>
     );
   }

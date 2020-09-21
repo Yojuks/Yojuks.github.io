@@ -39,6 +39,6 @@
     padding: 10px;
 }
 
-.todolist .todolist-footer .buttons button.active{
+.todolist .todolist-footer .buttons button.selected{
     border: 2px solid black;
 }

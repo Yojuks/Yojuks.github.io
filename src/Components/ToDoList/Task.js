@@ -2,14 +2,13 @@ import React, { Component } from "react";
 
 class Task extends Component {
     constructor(props) {
-        super();
+        super(props);
 
         this.parentDeleteCallback = props.deleteCallback
         this.parentUpdateCallback = props.updateCallback
     }
 
     deleteTask(e) {
-        // console.log(this.props.task);
         this.parentDeleteCallback(this.props.task.id);
     }
 
@@ -21,16 +20,7 @@ class Task extends Component {
         var task = {
             ...this.props.task
         }
-        // console.log("task.isDone === 'false'", task.isDone === false);
-        // if (task.isDone === false) {
 
-        //     task.isDone = true
-        //     console.log( task.isDone);
-        // }
-
-        // if (task.isDone === true) {
-        //     task.isDone = false
-        // }
         task.isDone = !task.isDone
 
         this.parentUpdateCallback(task)
