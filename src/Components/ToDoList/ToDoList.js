@@ -11,20 +11,35 @@ class ToDoList extends Component {
   
     this.state = {
       tasks: [
-        {
-          id: 0,
-          title: "learn js",
-          isDone: false,
-        },
-        {
-          id: 1,
-          title: "learn react",
-          isDone: false,
-        },
       ],
       filter: 'all'
     }
+    debugger
+    fetch("https://repetitora.net/api/JS/Tasks?widgetId=53236&count=30", 
+    {
+      method: "GET",
+      headers: {
+        'content-type': 'application/x-www-form-unlencoded: charset=UTF-8', 
+        'accept': 'application/json'
+      },
+      mode: 'no-cors'
+    })
+      .then(result => result.json() )
+      .then(tasksFromServer => {
+
+        let tasks = tasksFromServer.map(itemFromServer => {
+          return {
+            id: itemFromServer.id,
+            title: itemFromServer.title,
+            done: itemFromServer.done
+          }
+        })
+          this.setState({
+            tasks: tasks
+          })
+      })
   }
+  
 
   clearCompleted() {
     this.setState({
